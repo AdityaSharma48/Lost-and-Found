@@ -1,0 +1,130 @@
+﻿@page
+@model Lost_and_Found.Views.Login.LoginIndexModel
+@{
+    Layout = null;
+}
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Lost - Found : Web Page</title>
+    <link href="~/Css/Login.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="Navbar">
+        <img src="~/Pic/logo name.png" alt="Alternate Text"/>
+    </div>
+
+    <div class="Hero" style="height:538px;">
+        <div class="HeroPic">
+            <img src="~/Pic/HeroPic.png" alt="HeroPic"/>
+            <div>
+                <h2>Welcome to Our Lost and Found Website!</h2>
+                <p>We're excited to help you find and recover lost items. Easily report lost belongings, search for found items, and connect with others. Our user-friendly platform aims to reunite you with your lost possessions quickly and efficiently.</p>
+            </div>
+        </div>
+        <div class="Login">
+            <div class="LoginStyle">
+                <h2 style="text-align: center; margin-top:10px">Login</h2>
+                <label for="email" style="line-height: 27px">Email:</label>
+                <input style="line-height: 27px" type="email" id="email" name="email" placeholder="Enter your email" required />
+
+                <label style="line-height: 27px" for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" style="line-height: 27px" required />
+
+                <button style="line-height: 27px" onclick="btnClick()">Login</button>
+
+                <p style="text-align: center; margin-top: 15px; font-size: 12px; white-space: nowrap;">
+                    Don't have an account? <a asp-controller="SignUp" asp-action="SignIndex">Sign Up</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-logo">
+            <img src="~/Pic/Logo.png" alt="Lost and Found Logo" class="logo-img" />
+        </div>
+
+        <div class="footer-content">
+            <div class="footer-column help">
+                <h2>Help</h2>
+                <p><a href="#">Customer Support</a></p>
+                <p><a href="#">Terms & Conditions</a></p>
+                <p><a href="#">Privacy Policy</a></p>
+            </div>
+
+            <div class="footer-column copyright-area" style="margin-top: 44px;">
+                <p>&copy; Copyright 2024 Lost and Found</p>
+                <p>All Right Reserved</p>
+            </div>
+
+            <div class="footer-column contact">
+                <h2>Contact</h2>
+                <p>Tel : +94 716521090</p>
+                <p>Email : talkprojects@gmailx.com</p>
+
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+
+        function btnClick() 
+        {
+            const email = $("#email").val().trim();
+            const password = $("#password").val().trim();
+
+            $.ajax({
+                url: '/Login/SaveData',
+                type: 'POST',
+                data: { email: email, password: password },
+                success: function(response) 
+                {
+                    if (response.status === "success") 
+                    {
+                        Swal.fire({
+                            title: "Success!",
+                            text: response.message,
+                            icon: "success",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            window.location.href = '/Home1/HomeIndex';
+                        });
+
+                    } else if (response.status === "error") {
+                        Swal.fire({
+                            title: "Oops!",
+                            text: response.message,
+                            icon: "warning",
+                            confirmButtonText: "OK"
+                        });
+                    }
+                },
+                error: function() {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Something went wrong while logging in.",
+                        icon: "error",
+                        confirmButtonText: "Try Again"
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>

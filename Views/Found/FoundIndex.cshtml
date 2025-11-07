@@ -1,0 +1,181 @@
+﻿@page
+@model Lost_and_Found.Views.Found.FoundIndexModel
+
+
+
+
+
+@{
+    Layout = null;
+}
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var userId = HttpContextAccessor.HttpContext?.Session?.GetInt32("UserId");
+}
+
+<link href="~/css/Lost.css" rel="stylesheet" />
+
+
+
+<partial name="~/Views/Navbar/NavbarIndex.cshtml" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<div class="Lost" style="height:495px;">
+    <h2 style="text-align:center;font-size:35px;margin-top:10px;margin-bottom: -23px;">Found Items</h2>
+    <div class="searchbar" id="searchbar">
+        <span class="icon-left"><i class="fa-solid fa-bars"></i></span>
+        <input type="text" placeholder="Item Name" name="search" id="search">
+        <span class="icon-right"><i class="fa-solid fa-magnifying-glass" onclick="SearchItem()"></i></span>
+    </div>  
+    <div class="container">
+    </div>
+</div>
+<partial name="~/Views/Footer/FooterIndex.cshtml" />
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+
+    $(document).ready(function()
+    {
+        GetLostDataAll();
+    });
+
+    function GetLostDataAll()
+    {
+        let userId = '@userId';
+
+        if (!userId)
+        {
+            console.warn("User ID not found in session!");
+            return;
+        }
+
+        $.ajax({
+            url: '/Found/FetchData',
+            type: 'POST',
+            data: { userId: userId },
+            success: function(response)
+            {
+                console.log(response);
+
+                let container = $('.container');
+                container.empty();
+
+                if (!response || response.length === 0)
+                {
+                    container.html('<p style="text-align:center;">No items found</p>');
+                    return;
+                }
+
+                response.forEach(item => {
+                    let cardHtml = `
+                        <div class="student-card" data-userid="${item.userId}" data-id="${item.id}">
+                            <div></div>
+                            <div class="card-header">
+                                <div class="avatar">${item.name ? item.name.charAt(0) : '?'}</div>
+                                <div class="info">
+                                    <h3>${item.name}</h3>
+                                    <p>${new Date(item.dateLost).toLocaleDateString()}</p>
+                                </div>
+                            </div>
+
+                            <div class="card-image">
+                                <img src="${item.photoPath}" alt="${item.item}" />
+                            </div>
+
+                            <div class="card-content">
+                                <h4>Item: ${item.item}</h4>
+                                <p class="location">Location: ${item.location}</p>
+                                <p class="description">Desc: ${item.description}</p>
+                                <p class="phone">Phone: ${item.phone}</p>
+                            </div>
+
+                            <div class="card-footer">
+                                <button class="contact-btn" >Found</button>
+                            </div>
+                        </div>
+                    `;
+                    container.append(cardHtml);
+                });
+            },
+            error: function(xhr, status, error)
+            {
+                console.error("AJAX Error:", error);
+            }
+        });
+    }
+
+
+
+
+    function SearchItem()
+    {
+        let item = document.getElementById("search").value;
+        let userId = '@userId';
+
+        if (!userId)
+        {
+            console.warn("User ID not found in session!");
+            return;
+        }
+
+        $.ajax({
+            url: '/Found/Search',
+            type: 'POST',
+            data: { userId: userId , item : item},
+            success: function(response)
+            {
+                console.log(response);
+
+                let container = $('.container');
+                container.empty();
+
+                if (!response || response.length === 0)
+                {
+                    container.html('<p style="text-align:center;">No items found</p>');
+                    return;
+                }
+
+                response.forEach(item => {
+                    let cardHtml = `
+                        <div class="student-card">
+                            <div class="card-header">
+                                <div class="avatar">${item.name ? item.name.charAt(0) : '?'}</div>
+                                <div class="info">
+                                    <h3>${item.name}</h3>
+                                    <p>${new Date(item.dateLost).toLocaleDateString()}</p>
+                                </div>
+                            </div>
+
+                            <div class="card-image">
+                                <img src="${item.photoPath}" alt="${item.item}" />
+                            </div>
+
+                            <div class="card-content">
+                                <h4>Item: ${item.item}</h4>
+                                <p class="location">Location: ${item.location}</p>
+                                <p class="description">Desc: ${item.description}</p>
+                                <p class="phone">Phone: ${item.phone}</p>
+                            </div>
+
+                            <div class="card-footer">
+                                <button class="contact-btn" disabled>Found</button>
+                            </div>
+                        </div>
+                    `;
+                    container.append(cardHtml);
+                });
+            },
+            error: function(xhr, status, error)
+            {
+                console.error("AJAX Error:", error);
+            }
+        });
+    }
+
+</script>
+

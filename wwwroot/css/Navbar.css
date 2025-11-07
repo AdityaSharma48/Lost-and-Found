@@ -1,0 +1,48 @@
+﻿*{
+    margin : 0px;
+    padding : 0px;
+    box-sizing : border-box;
+}
+
+.Navbar {
+    height: 70px;
+    width: 100%;
+    background-color: #FDFDEB;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding: 0 20px; 
+}
+
+.NavbarImg 
+{
+    width: auto;
+}
+
+.NavbarSec 
+{
+    display: flex;
+    gap: 25px; 
+}
+
+.NavbarImg img 
+{
+    height: auto;
+    max-height: 100%;
+    width: 185px;
+    object-fit: contain;
+}
+
+.NavbarSec a {
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+}
+
+
+.LogOut {
+    padding: 2px 20px 2px 22px;
+    border-radius: 10px;
+    background-color: #d5c8c8;
+}
+

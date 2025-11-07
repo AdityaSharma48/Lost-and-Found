@@ -1,0 +1,59 @@
+﻿@page
+@model Lost_and_Found.Views.Navbar.NavbarIndexModel
+@{
+    Layout = null;
+}
+
+@{
+    var profile = ViewBag.Profile;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar</title>
+    <link href="~/css/Navbar.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="Navbar">
+        <div class="NavbarImg">
+            <img src="~/Pic/logo name.png" />
+        </div>
+        <div class="NavbarSec">
+            <a asp-action="HomeIndex" asp-controller="Home1">Home</a>
+            <a asp-action="LostIndex" asp-controller="Lost">Lost</a>
+            <a asp-action="ReportLostIndex" asp-controller="ReportLost">ReportLost</a>
+            <a asp-action="FoundIndex" asp-controller="Found">Found</a>
+            <a asp-action="ReportFoundIndex" asp-controller="ReportFound">ReportFound</a>
+            <a asp-action="ProfileIndex" asp-controller="Profile">Profile</a>
+            <div class="NavbarPic">
+                <img src="@(ViewBag.Profile?.PhotoPath ?? "https://cdn-icons-png.flaticon.com/512/847/847969.png")"
+                     alt="User Photo" style="height: 30px;width: 30px; margin-right: -6px; margin-top: -7px; object-fit:cover; border-radius:50%">
+            </div>
+            <a class="LogOut" asp-action="Logout" asp-controller="Login">Log Out</a>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.querySelector('.LogOut').addEventListener('click', function(event) 
+        {
+            event.preventDefault(); 
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You will be logged out of your account.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, logout",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/Login/Logout'; 
+                }
+            });
+        });
+    </script>
+</body>
+</html>

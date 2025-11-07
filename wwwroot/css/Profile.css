@@ -1,0 +1,131 @@
+﻿.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 495px;
+    overflow-y: auto; /* Enables scrolling */
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: linear-gradient(to right, #f8e0e0, #f8f8e0);
+}
+
+.profile-title 
+{
+    color: #4c7b00;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.profile-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    /*    border: 2px solid #007bff;*/
+    border-radius: 10px;
+    padding: 25px 35px;
+    width: 320px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(to right, #f8e0e0, #f8f8e0);
+}
+
+/* Profile Picture Section */
+.profile-pic-container {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Circular frame with shadow */
+.profile-pic-frame {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #007bff;
+    overflow: hidden;
+    margin: 0 auto 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f8ff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+    transition: box-shadow 0.3s ease;
+}
+
+    .profile-pic-frame:hover {
+        box-shadow: 0 0 15px rgba(0, 123, 255, 0.6);
+    }
+
+    .profile-pic-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+/* Upload Button */
+.upload-label {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+    .upload-label:hover {
+        background-color: #005fcc;
+    }
+
+.profile-box label {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.profile-box input[type="text"],
+.profile-box input[type="email"] {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.profile-box input[type="file"] {
+    display: none;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.save-btn 
+{
+    background-color: black;
+    color: white;
+    padding: 2px 35px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin:auto;
+}
+
+
+.cancel-btn 
+{
+    background-color: #ccc;
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+}
+
+    .cancel-btn:hover {
+        background-color: #b3b3b3;
+    }

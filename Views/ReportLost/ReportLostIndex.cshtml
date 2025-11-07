@@ -1,0 +1,133 @@
+﻿@page
+@model Lost_and_Found.Views.ReportLost.ReportLostIndexModel
+
+@{
+    Layout = null;
+}
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var userId = HttpContextAccessor.HttpContext?.Session?.GetInt32("UserId");
+}
+
+<link href="~/css/ReportLost.css" rel="stylesheet" />
+<partial name="~/Views/Navbar/NavbarIndex.cshtml" />
+
+<div class="ReportLost" style="height:495px;">
+    <h2 style="text-align : center; padding-top:25px;">Report Lost Item</h2>
+    <div class="ReportLostForm" style="height:430px ; border:none">
+        <div class="form-group">
+            <label for="name">Name :</label>
+            <input type="text" id="name" name="name" value="@HttpContextAccessor.HttpContext?.Session.GetString("UserName")" readonly required>
+        </div>
+
+        <div class="form-group">
+            <label for="item">Item :</label>
+            <input type="text" id="item" name="item" required class="with-dropdown">
+        </div>
+
+        <div class="form-group">
+            <label for="location">Location :</label>
+            <input type="text" id="location" name="location" required class="with-dropdown">
+        </div>
+
+        <div class="form-group">
+            <label for="date">Date :</label>
+            <div class="date-input-container">
+                <input type="date" id="date" name="date" placeholder="mm/dd/yyyy" required>
+                <span class="date-icon">&#128197;</span>
+            </div>
+        </div>
+
+        <div class="form-group description-group">
+            <label for="description">Item Description :</label>
+            <textarea id="description" name="description" rows="4"></textarea>
+        </div>
+
+        <div class="form-group photo-group">
+            <label for="photo">Upload Photo :</label>
+            <div class="upload-container" id="photoContainer">
+                <input type="file" id="photo" name="photo" accept="image/*" style="display: none;">
+                <span class="upload-text">(Upload pic)</span>
+            </div>
+        </div>
+
+        <div class="form-group phone-group">
+            <label for="photo">Phone :</label>
+            <input type="text" name="phone" id="phone" value="@ViewBag.profile.phoneno" readonly/>
+        </div>
+
+        <div class="button-group">
+            <button onclick="BtnClick()" class="btn submit-btn">Submit</button>
+            <button type="reset" class="btn reset-btn">Reset</button>
+        </div>
+    </div>
+</div>
+
+<partial name="~/Views/Footer/FooterIndex.cshtml" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    const fileInput = document.getElementById('photo');
+    const uploadText = document.querySelector('.upload-text');
+    const uploadContainer = document.getElementById('photoContainer');
+
+    uploadContainer.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    fileInput.addEventListener('change', function() {
+        if (this.files && this.files.length > 0) {
+            uploadText.textContent = this.files[0].name;
+        } else {
+            uploadText.textContent = "(Upload pic)";
+        }
+    });
+
+    function BtnClick() 
+    {
+        const name = document.getElementById('name').value;
+        const item = document.getElementById('item').value;
+        const location = document.getElementById('location').value;
+        const date = document.getElementById('date').value || new Date().toISOString().split('T')[0];
+        const description = document.getElementById('description').value;
+        const photoInput = document.getElementById('photo');
+        const userId = '@userId';
+        const phone = document.getElementById('phone').value;
+
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("item", item);
+        formData.append("location", location);
+        formData.append("date", date);
+        formData.append("description", description);
+        formData.append("userId", userId);
+        formData.append("phone", phone);
+
+        if (photoInput.files.length > 0) 
+        {
+            formData.append("photo", photoInput.files[0]);
+        }
+
+        $.ajax({
+            url: '/ReportLost/SaveData',
+            type: 'POST',
+            data: formData,
+            processData: false, 
+            contentType: false,   
+            success: function (response) 
+            {
+                console.log("Server response:", response);
+                alert("File uploaded successfully!");
+            },
+            error: function (xhr, status, error) 
+            {
+                console.error("AJAX error:", error);
+                alert("Something went wrong while uploading.");
+            }
+        });
+    }
+</script>
+
